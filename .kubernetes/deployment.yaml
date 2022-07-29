@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asp
+  template:
+    metadata:
+      labels:
+        app: asp
+    spec:
+      containers:
+        - name: asp-mvc
+          image: longswordFish/asp-k8s:latest
+
