@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+  namespace: ci-test
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-deploy        
+    spec:
+      containers:
+        - name: nginx-deploy
+          imagePullPolicy: Always
+          image: nginx
+          env:
+          - name: TZ
+            value: Asia/Shanghai
+  selector:
+    matchLabels:
+      app: nginx-deploy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-deploy-ci-test
+  namespace: ci-test
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31594
+  selector:
+    app: nginx-deploy
